@@ -3,18 +3,21 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
+//This is working
 router.get('/', async (req, res) => {
   // find all tags
   // be sure to include its associated Product data
-
   try {
-    const tagData = await Tag.findAll();
+    const tagData = await Tag.findAll({
+    include: [{ model: Product, through: ProductTag, as: 'tagbelongstoproduct' }]
+    });
     res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
+//This might be returning more than I want, maybe
 router.get('/:id', async (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
@@ -29,13 +32,13 @@ router.get('/:id', async (req, res) => {
       res.status(404).json({ message: 'No tag found with this id!' });
       return;
     }
-
     res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
+//Need to show the body for the post request and then try it
 router.post('/', async (req, res) => {
   // create a new tag
   try {
@@ -46,16 +49,24 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+//Cannot get this route to work
 router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
-try {
-  const tagData = await Tag.update(req.body);
-    where: {
-      id: req.params.id
-    }
-         catch () { }
-    }
-  )
+ try {
+  const tagData = await Tag.update(
+   {
+     tag_name: req.body.tag_name,
+   },
+    {
+      where: {
+        id: req.params.id
+      }
+    });
+    res.status(200).json(tagData);
+  } catch (err) {
+    res.status(400).json(err);
+   };
 });
 
 
