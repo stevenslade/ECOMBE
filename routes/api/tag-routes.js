@@ -50,7 +50,10 @@ router.post('/', async (req, res) => {
 });
 
 
-//Cannot get this route to work
+//The update body will have this format, the id will be entered in the URL
+//{
+//  "tag_name" : "new tag name"
+//}
 router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
  try {
