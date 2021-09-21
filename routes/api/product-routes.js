@@ -116,7 +116,7 @@ router.put('/:id', (req, res) => {
 });
 
 //Delete a product by its ID
-//CODED - NOT TESTED
+//FUNCTIONAL
 router.delete('/:id', async (req, res) => {
   try {
     const productData = await Product.destroy({
